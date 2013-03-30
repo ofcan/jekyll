@@ -1,10 +1,19 @@
 #!/usr/bin/env ruby
 STDOUT.sync = true
+# synces input-output
 
 $:.unshift File.join(File.dirname(__FILE__), *%w{ .. lib })
+# $: - shortcut for $LOAD_PATH
+#    - that $LOAD_PATH is an array
+# unshift - prepends the provided value to the front of the array, moving all other elements up one
+# __FILE__ - relative path to script
+# >> adds the current script dir to the load path
 
 require 'commander/import'
+# The complete solution for Ruby command-line executables
+# this provides the elegant syntax of this file
 require 'jekyll'
+# requires lib/jekyll.rb
 
 program :name, 'jekyll'
 program :version, Jekyll::VERSION
@@ -12,6 +21,7 @@ program :description, 'Jekyll is a blog-aware, static site generator in Ruby'
 
 default_command :help
 
+# options that you can pass when saying $ jekyll
 global_option '-s', '--source [DIR]', 'Source directory (defaults to ./)'
 global_option '-d', '--destination [DIR]', 'Destination directory (defaults to ./_site)'
 global_option '--safe', 'Safe mode (defaults to false)'
@@ -36,7 +46,7 @@ command :new do |c|
   c.description = 'Creates a new Jekyll site scaffold in PATH'
 
   c.action do |args, options|
-    Jekyll::Commands::New.process(args)
+    Jekyll::Commands::New.process(args) # lib/jekyll/commands/new.rb
   end
 end
 

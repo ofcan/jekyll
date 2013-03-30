@@ -1,13 +1,18 @@
 require 'erb'
+# powerful templating system for Ruby
 
 module Jekyll
   module Commands
     class New < Command
-      def self.process(args)
+      def self.process(args) # process is just a method name; could be '.michael'
         raise ArgumentError.new('You must specify a path.') if args.empty?
 
-        new_blog_path = File.expand_path(args.join(" "), Dir.pwd)
+        new_blog_path = File.expand_path(args.join(" "))
+        # if you say $ jekyll new my super blog
+        # line above will create folder 'mysuperblog' in current dir
         FileUtils.mkdir_p new_blog_path
+        # fileutils is part of the standard library ruby has
+        # mkdir_p creates a folder and all its parent dirs
 
         create_sample_files new_blog_path
 
@@ -31,7 +36,13 @@ module Jekyll
       private
       def self.create_sample_files(path)
         FileUtils.cp_r site_template + '/.', path
+        # cp_r(src, dest, options={})
+        # copies source to destination
+        # if src is a dir, copies all its contents recursively
+        # if dest is a dir, copies src to dest/src
+        # copies the files from jekyll/lib/site_template
         FileUtils.rm File.expand_path(scaffold_path, path)
+        # this file is being removed because we create one with proper date later on
       end
 
       def self.site_template
