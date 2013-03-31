@@ -9,13 +9,14 @@ module Jekyll
 
         new_blog_path = File.expand_path(args.join(" "))
         # if you say $ jekyll new my super blog
-        # line above will create folder 'mysuperblog' in current dir
+        # line above will create path for folder 'my super blog' in current dir
         FileUtils.mkdir_p new_blog_path
         # fileutils is part of the standard library ruby has
         # mkdir_p creates a folder and all its parent dirs
 
         create_sample_files new_blog_path
 
+        # Creates new post with current date and writes dummy text into it
         File.open(File.expand_path(self.initialized_post_name, new_blog_path), "w") do |f|
           f.write(self.scaffold_post_content(site_template))
         end
@@ -24,6 +25,7 @@ module Jekyll
 
       def self.scaffold_post_content(template_site)
         ERB.new(File.read(File.expand_path(scaffold_path, site_template))).result
+        # ERB.new result converts the post to standard html
       end
 
       # Internal: Gets the filename of the sample post to be created
