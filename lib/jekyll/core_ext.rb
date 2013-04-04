@@ -1,3 +1,14 @@
+# Public: methods that apply to all objects of that type ( Hash, Date, Enumerable)
+#
+# Be careful when you're adding methods like this because you can confuse people,
+# they can overwrite it etc
+#
+# Add only those methods that you're absolutely sure are needed across multiple
+# objects of the same type
+#
+# To find wether you need to write class Hash or module Hash to add methods to
+# all hashes, run in irb: Hash.class
+
 class Hash
   # Merges self with another hash, recursively.
   #

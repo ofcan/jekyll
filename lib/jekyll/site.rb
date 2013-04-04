@@ -119,6 +119,7 @@ module Jekyll
     def read_layouts
       base = File.join(self.source, self.config['layouts'])
       return unless File.exists?(base)
+      # abort the method and return nil unless the file exists
       entries = []
       Dir.chdir(base) { entries = filter_entries(Dir['*.*']) }
 
@@ -357,11 +358,21 @@ module Jekyll
     # Returns the Array of filtered entries.
     def filter_entries(entries)
       entries.reject do |e|
+      # reject returns new array made from entries array for wich following
+      # block is not true
         unless self.include.glob_include?(e)
+          # .glob_include? method is from lib/jekyll/core_ext.rb module Enumerable
+          # check if each of the elements in the entries array matches the
+          # globbed files
           ['.', '_', '#'].include?(e[0..0]) ||
+          # 'string'.[0] => 's', so why [0..0]?
+          # in 1.8 String#[] with a single number gave back the ascii value,
+          # not the character, so it is basically a backward compatibility hack
           e[-1..-1] == '~' ||
           self.exclude.glob_include?(e) ||
           (File.symlink?(e) && self.safe)
+          # File.symlink? returns true if the file is symlink
+          # .safe is on Line 7
         end
       end
     end
